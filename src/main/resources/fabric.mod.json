@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "updateinator",
-  "version": "${version}",
+  "version": "0.0.1",
 
   "name": "Updateinator",
   "description": "An automatic update manager for fabric server mods!",
@@ -14,7 +14,7 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/updateinator/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -23,7 +23,6 @@
     ]
   },
   "mixins": [
-    "modid.mixins.json"
   ],
 
   "depends": {
@@ -33,6 +32,5 @@
     "java": ">=16"
   },
   "suggests": {
-    "another-mod": "*"
   }
 }
