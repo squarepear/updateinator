@@ -16,7 +16,8 @@ import net.minecraft.util.Formatting;
 // import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class UpdateinatorCommand {
 	public static void register(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
@@ -29,17 +30,28 @@ public class UpdateinatorCommand {
     public static int list(CommandContext<ServerCommandSource> context) {
 		// TODO: Get list of user installed mods
 
-		// for (ModContainer mod : FabricLoader.getInstance().getAllMods()) {
-		// 	ModMetadata metadata = mod.getMetadata();
-		// 	var authors = metadata.getAuthors();
+		Collection<ModContainer> mods = FabricLoader.getInstance().getAllMods().stream()
+			// Remove mods with author FabricMC
+			.filter(mod -> !(!mod.getMetadata().getAuthors().isEmpty() && mod.getMetadata().getAuthors().iterator().next().getName().trim().equals("FabricMC")))
+			// Remove mods that don't depend on minecraft
+			.filter(mod -> !(mod.getMetadata().getDepends().isEmpty() || !mod.getMetadata().getDepends().iterator().next().getModId().equals("minecraft")))
+			// Return collection
+			.collect(Collectors.toList());
 
-		// 	if (!authors.isEmpty() && authors.iterator().next().getName().trim() == "FabricMC")
-		// 		continue;
+		for (ModContainer mod : mods) {
+			ModMetadata metadata = mod.getMetadata();
 
-		// 	context.getSource().sendFeedback(new LiteralText(String.format("%s %s %s", metadata.getName(), metadata.getVersion(), metadata.getId())), false);
-		// }
-
-		context.getSource().sendFeedback(new TranslatableText("commands.updateinator.list").formatted(Formatting.GOLD), false);
+			context.getSource().sendFeedback(new LiteralText("")
+				.append( // Mod name in gold
+					new LiteralText(metadata.getName()).formatted(Formatting.GOLD)
+				).append( // Mod version in blue
+					new LiteralText(String.format(" %s ", metadata.getVersion().getFriendlyString())).formatted(Formatting.BLUE))
+				.append( // Mod id in gray
+					new LiteralText(metadata.getId()).formatted(Formatting.GRAY)
+				),
+				false
+			);
+		}
 		
         return Command.SINGLE_SUCCESS;
     }
