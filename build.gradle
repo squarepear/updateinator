@@ -15,6 +15,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+    mavenCentral()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 }
 
@@ -30,6 +31,12 @@ dependencies {
 	// Permissions API
     modImplementation "me.lucko:fabric-permissions-api:0.1-SNAPSHOT"
     include "me.lucko:fabric-permissions-api:0.1-SNAPSHOT"
+
+	// API library
+    implementation 'com.konghq:unirest-java:3.11.09'
+
+	// SemVer library
+	implementation 'com.github.zafarkhaja:java-semver:0.10.0-SNAPSHOT'
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

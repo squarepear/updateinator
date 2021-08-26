@@ -1,7 +1,5 @@
 package com.reygames.updateinator;
 
-import com.reygames.updateinator.commands.ModCommands;
-
 import net.fabricmc.api.ModInitializer;
 
 public class Updateinator implements ModInitializer {
@@ -10,6 +8,6 @@ public class Updateinator implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModCommands.registerCommands();
+		Commands.registerCommands();
 	}
 }
